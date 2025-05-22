@@ -36,9 +36,7 @@
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_FRAMERATE 30
-//#define YUY2 ((const gchar*)"YUY2")
-#define YUY2 "YUY2"
-#define DEFAULT_FORMAT YUY2
+#define DEFAULT_FORMAT "YUY2"
 #define MAX_VID_DEV_CNT 64
 
 #define GST_APP_SUMMARY                                                       \
@@ -58,7 +56,7 @@ struct GstCameraAppCtx {
   gint width;
   gint height;
   gint framerate;
-  const gchar *format;
+  gchar *format;
 };
 typedef struct GstCameraAppCtx GstCameraAppContext;
 
@@ -211,7 +209,7 @@ gst_app_context_new ()
   ctx->width = DEFAULT_WIDTH;
   ctx->height = DEFAULT_HEIGHT;
   ctx->framerate = DEFAULT_FRAMERATE;
-  ctx->format = DEFAULT_FORMAT;
+  ctx->format = g_strdup(DEFAULT_FORMAT);
   return ctx;
 }
 
@@ -229,9 +227,6 @@ gst_app_context_free (GstCameraAppContext * appctx)
     g_main_loop_unref (appctx->mloop);
     appctx->mloop = NULL;
   }
-
-//  g_free (appctx->ip_address);
-//  g_free (appctx->port_num);
 
   if (appctx->pipeline != NULL) {
     gst_object_unref (appctx->pipeline);
